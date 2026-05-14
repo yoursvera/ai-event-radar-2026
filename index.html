@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="description" content="AI行业峰会日历 - 仅限个人参考">
+<title>AI行业峰会雷达 | 2026-2027</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #0f0f1a; color: #e0e0e0; line-height: 1.6; }
+
+.hero { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 50px 40px 35px; text-align: center; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 50%); animation: pulse 8s infinite; }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+.hero h1 { font-size: 2.2rem; font-weight: 700; background: linear-gradient(90deg, #818cf8, #6366f1, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; position: relative; }
+.hero .subtitle { color: #94a3b8; font-size: 0.95rem; position: relative; }
+.hero .date-badge { display: inline-block; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); border-radius: 20px; padding: 4px 16px; margin-top: 10px; font-size: 0.82rem; color: #a5b4fc; position: relative; }
+
+.nav-bar { position: sticky; top: 0; z-index: 100; background: rgba(15,15,26,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(99,102,241,0.2); padding: 10px 20px; display: flex; gap: 6px; overflow-x: auto; justify-content: center; flex-wrap: wrap; }
+.nav-bar a { text-decoration: none; color: #94a3b8; font-size: 0.82rem; padding: 5px 12px; border-radius: 14px; border: 1px solid rgba(148,163,184,0.2); transition: all 0.2s; white-space: nowrap; }
+.nav-bar a:hover, .nav-bar a.active { background: rgba(99,102,241,0.15); color: #a5b4fc; border-color: rgba(99,102,241,0.4); }
+.nav-bar .sep { color: #334155; margin: 0 4px; align-self: center; }
+
+.toolbar { max-width: 1100px; margin: 0 auto; padding: 20px 20px 0; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.filter-btn { background: rgba(30,30,50,0.6); border: 1px solid rgba(148,163,184,0.2); color: #94a3b8; padding: 5px 14px; border-radius: 14px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
+.filter-btn:hover, .filter-btn.active { background: rgba(99,102,241,0.15); color: #a5b4fc; border-color: rgba(99,102,241,0.4); }
+.filter-btn.fav-active { background: rgba(234,179,8,0.15); color: #fcd34d; border-color: rgba(234,179,8,0.4); }
+.fav-count { font-size: 0.7rem; background: #eab308; color: #000; padding: 1px 6px; border-radius: 8px; margin-left: 4px; font-weight: 600; }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 20px 20px 30px; }
+
+.month-section { margin-bottom: 45px; scroll-margin-top: 60px; }
+.month-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(99,102,241,0.12); }
+.month-num { font-size: 2.2rem; font-weight: 800; background: linear-gradient(180deg, #6366f1, #4f46e5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; }
+.month-name { font-size: 1rem; color: #cbd5e1; }
+.month-count { font-size: 0.72rem; color: #64748b; background: rgba(100,116,139,0.15); padding: 2px 8px; border-radius: 10px; }
+
+.card { background: rgba(30,30,50,0.6); border: 1px solid rgba(99,102,241,0.12); border-radius: 14px; padding: 20px 22px; margin-bottom: 14px; transition: all 0.3s; position: relative; cursor: default; }
+.card:hover { border-color: rgba(99,102,241,0.35); box-shadow: 0 6px 24px rgba(99,102,241,0.08); }
+.card.hidden { display: none; }
+.card-row1 { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; flex-wrap: wrap; gap: 6px; }
+.card-title { font-size: 1.05rem; font-weight: 600; color: #f1f5f9; flex: 1; }
+.tag { display: inline-block; font-size: 0.7rem; padding: 2px 9px; border-radius: 10px; font-weight: 500; }
+.tag-industry { background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+.tag-vendor { background: rgba(234,179,8,0.12); color: #fcd34d; border: 1px solid rgba(234,179,8,0.25); }
+.tag-release { background: rgba(249,115,22,0.12); color: #fdba74; border: 1px solid rgba(249,115,22,0.25); }
+.tag-expo { background: rgba(34,197,94,0.12); color: #86efac; border: 1px solid rgba(34,197,94,0.25); }
+.tag-academic { background: rgba(168,85,247,0.12); color: #d8b4fe; border: 1px solid rgba(168,85,247,0.25); }
+
+.card-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; font-size: 0.82rem; color: #94a3b8; }
+.card-desc { font-size: 0.87rem; color: #cbd5e1; line-height: 1.65; }
+.card-desc .hl { color: #a5b4fc; font-weight: 500; }
+.card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+.card-org { font-size: 0.78rem; color: #64748b; }
+.card-actions { display: flex; gap: 10px; align-items: center; }
+.btn-detail { font-size: 0.78rem; color: #818cf8; text-decoration: none; border-bottom: 1px dashed rgba(129,140,248,0.4); cursor: pointer; transition: color 0.2s; }
+.btn-detail:hover { color: #a5b4fc; }
+.btn-fav { width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(234,179,8,0.3); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.2s; }
+.btn-fav:hover { border-color: rgba(234,179,8,0.6); background: rgba(234,179,8,0.1); }
+.btn-fav.favorited { background: rgba(234,179,8,0.2); border-color: #eab308; }
+
+.status-ok { color: #4ade80; }
+.status-warn { color: #fbbf24; }
+
+.countdown-inline { font-size: 0.78rem; color: #6366f1; font-weight: 600; margin-left: auto; white-space: nowrap; }
+
+/* Detail overlay */
+.detail-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); justify-content: center; align-items: center; padding: 20px; }
+.detail-overlay.show { display: flex; }
+.detail-panel { background: #1e1e32; border: 1px solid rgba(99,102,241,0.3); border-radius: 16px; max-width: 700px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 32px; position: relative; }
+.detail-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #94a3b8; font-size: 1.4rem; cursor: pointer; }
+.detail-close:hover { color: #f1f5f9; }
+.detail-panel h2 { font-size: 1.3rem; color: #f1f5f9; margin-bottom: 16px; }
+.detail-section { margin-bottom: 16px; }
+.detail-section h3 { font-size: 0.85rem; color: #6366f1; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.detail-section p { font-size: 0.9rem; color: #cbd5e1; }
+.detail-section a { color: #818cf8; text-decoration: none; border-bottom: 1px dashed rgba(129,140,248,0.4); }
+.detail-section a:hover { color: #a5b4fc; }
+.detail-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.detail-tags span { font-size: 0.75rem; padding: 3px 10px; border-radius: 10px; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; }
+
+.footer { text-align: center; padding: 30px 20px; color: #475569; font-size: 0.78rem; border-top: 1px solid rgba(99,102,241,0.08); margin-top: 30px; }
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.5rem; }
+  .card { padding: 16px; }
+  .detail-panel { padding: 20px; margin: 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>AI 行业峰会雷达</h1>
+  <p class="subtitle">2026下半年 ~ 2027初 · 值得关注的AI行业大会</p>
+  <span class="date-badge">立足 2026.05.14 · 展望未来</span>
+</div>
+
+<nav class="nav-bar" id="nav">
+  <a href="#month-5">5月</a>
+  <a href="#month-6">6月</a>
+  <a href="#month-7">7月</a>
+  <a href="#month-9">9月</a>
+  <a href="#month-10">10月</a>
+  <a href="#month-11">11月</a>
+  <a href="#month-12">12月</a>
+  <span class="sep">|</span>
+  <a href="#month-1-2027">2027·1月</a>
+</nav>
+
+<div class="toolbar">
+  <button class="filter-btn active" data-filter="all">全部</button>
+  <button class="filter-btn" data-filter="行业峰会">行业峰会</button>
+  <button class="filter-btn" data-filter="厂商峰会">厂商峰会</button>
+  <button class="filter-btn" data-filter="行业展会">行业展会</button>
+  <button class="filter-btn" data-filter="学术顶会">学术顶会</button>
+  <button class="filter-btn" data-filter="厂商发布">厂商发布</button>
+  <span style="margin-left:auto;"></span>
+  <button class="filter-btn" id="fav-filter">我的关注<span class="fav-count" id="fav-count">0</span></button>
+</div>
+
+<div class="container" id="card-container"></div>
+
+<div class="detail-overlay" id="detail-overlay">
+  <div class="detail-panel" id="detail-panel">
+    <button class="detail-close" id="detail-close">&times;</button>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>AI行业峰会雷达 · 数据截至2026年5月14日 · 日期均经官方来源验证 · 标注"-"为未官宣</p>
+  <p style="margin-top:4px;">关注列表自动保存在本地浏览器中，刷新不丢失</p>
+</div>
+
+<script>
+const conferences = [
+  { id:'google-io', month:'5', name:'Google I/O 2026', date:'5月19-20日', year:'2026', status:'confirmed', location:'美国 山景城', type:'厂商峰会', org:'Google', url:'https://io.google', desc:'Google AI全线产品年度发布', detail:'观看重点：Gemini模型新版本能力演示、Android AI功能更新、AI Agent（Project Astra等）进展、AI搜索体验升级、Gemma开源模型。这是观察Google如何在C端AI产品对抗ChatGPT的最核心窗口。', topics:['Gemini','Android AI','AI Agent','AI搜索','开发者工具'], dateObj:'2026-05-19' },
+  { id:'computex', month:'6', name:'COMPUTEX 台北国际电脑展', date:'6月2-5日', year:'2026', status:'confirmed', location:'中国台湾 台北', type:'行业展会', org:'TAITRA（台湾外贸协会）', url:'https://www.computextaipei.com.tw', desc:'全球AI算力与芯片供应链核心展台', detail:'Jensen Huang将再次Keynote。重点关注：NVIDIA下一代GPU路线图、AMD MI系列进展、Intel加速器、AI服务器架构演进、液冷散热方案、AI PC芯片竞争格局。对AI Infra产业链投资分析必看。', topics:['AI芯片','AI服务器','液冷散热','AI PC','算力基础设施'], dateObj:'2026-06-02' },
+  { id:'ms-build', month:'6', name:'Microsoft Build 2026', date:'6月2-3日', year:'2026', status:'confirmed', location:'美国 旧金山', type:'厂商峰会', org:'Microsoft', url:'https://build.microsoft.com', desc:'微软AI开发者生态年度发布', detail:'关注重点：Copilot Stack最新架构、Azure AI服务更新（模型目录、AI Agent托管）、Windows AI功能、GitHub Copilot进化、小模型Phi系列。看微软如何把AI渗透进全产品线的开发者入口。', topics:['Copilot','Azure AI','Windows AI','GitHub Copilot','AI Agent'], dateObj:'2026-06-02' },
+  { id:'wwdc', month:'6', name:'Apple WWDC 2026', date:'6月8-12日', year:'2026', status:'confirmed', location:'美国 库比蒂诺', type:'厂商峰会', org:'Apple', url:'https://developer.apple.com/wwdc/', desc:'苹果端侧AI年度进化', detail:'最值得关注：Apple Intelligence第二年进化（写作/图像/Siri能力边界在哪）、Siri大模型重构进展、on-device vs cloud的策略选择、隐私计算框架。最能体现"AI如何融入10亿量级消费设备"。', topics:['Apple Intelligence','Siri','端侧ML','隐私计算','iOS/macOS'], dateObj:'2026-06-08' },
+  { id:'ai-summit-london', month:'6', name:'The AI Summit London', date:'6月10-11日', year:'2026', status:'confirmed', location:'英国 伦敦', type:'行业峰会', org:'Informa Tech', url:'https://london.theaisummit.com', desc:'欧洲企业AI商业化落地峰会（第10年）', detail:'面向企业决策层。重点议题：AI Agent在企业的实际部署案例、生成式AI ROI衡量、AI治理与EU AI Act合规实践、金融/医疗/制造垂直方案。观察欧洲企业AI采纳真实节奏的最佳窗口。', topics:['企业AI转型','AI Agent部署','AI合规','行业方案','ROI'], dateObj:'2026-06-10' },
+  { id:'baai', month:'6', name:'北京智源大会', date:'6月12-13日', year:'2026', status:'confirmed', location:'中国 北京', type:'行业峰会', org:'BAAI（北京智源人工智能研究院）', url:'https://2026.baai.ac.cn', desc:'中国最硬核AI学术+产业峰会', detail:'图灵奖得主领衔。议题覆盖：大模型前沿（对齐、Scaling Law、MoE架构）、多模态统一模型、具身智能、AI4Science、开源大模型生态。追踪中国AI基础研究方向和开源进展的首选。', topics:['大模型前沿','开源生态','AI4Science','具身智能','对齐'], dateObj:'2026-06-12' },
+  { id:'hdc', month:'6', name:'华为开发者大会 HDC 2026', date:'6月12-14日', year:'2026', status:'confirmed', location:'中国 东莞松山湖', type:'厂商峰会', org:'华为', url:'https://developer.huawei.com/consumer/cn/hdc/2026', desc:'HarmonyOS生态+端侧AI全面升级', detail:'预期发布HarmonyOS 7、盘古大模型新能力。关注：鸿蒙AI原生应用生态、端侧大模型部署、全场景智能体验。华为在国产替代+AI融合赛道的最新战略信号。', topics:['HarmonyOS','盘古大模型','端侧AI','全场景智能','鸿蒙生态'], dateObj:'2026-06-12' },
+  { id:'vivatech', month:'6', name:'VivaTech 2026', date:'6月17-20日', year:'2026', status:'confirmed', location:'法国 巴黎', type:'行业峰会', org:'Publicis & Les Echos', url:'https://vivatech.com', desc:'欧洲最大科技创新峰会（10周年）', detail:'2026核心主线：AI主权（Sovereignty）——欧洲如何建立自主AI能力。覆盖AI创业融资热度、Mistral等欧洲AI公司进展、深科技投资、可持续AI。适合关注欧洲AI创投生态和政策环境。', topics:['AI主权','AI创业','深科技投资','气候科技','欧洲AI政策'], dateObj:'2026-06-17' },
+  { id:'waic', month:'7', name:'WAIC 2026 上海世界人工智能大会', date:'7月3-6日', year:'2026', status:'confirmed', location:'中国 上海', type:'行业峰会', org:'上海市政府（国家部委指导）', url:'https://www.worldaic.com.cn', desc:'中国规格最高AI产业峰会', detail:'兼具政策信号释放+产业展示+国际对话三重功能。关注：国家AI产业新政策风向、头部企业（字节/百度/阿里/腾讯/华为）战略布局发布、大模型产业化落地标杆案例、AI治理中国方案。年度必看。', topics:['AI产业政策','大模型产业化','AI治理','大厂战略','国际合作'], dateObj:'2026-07-03' },
+  { id:'ai-for-good', month:'7', name:'AI for Good 全球峰会', date:'7月7-10日', year:'2026', status:'confirmed', location:'瑞士 日内瓦', type:'行业峰会', org:'ITU（联合国国际电信联盟）', url:'https://aiforgood.itu.int', desc:'联合国体系下最权威AI治理平台', detail:'40+联合国机构联合。议题：AI安全与对齐国际标准、AI伦理框架制定、AI助力可持续发展目标（气候/健康/教育）。适合关注全球AI监管框架演进和国际规则博弈的分析师。', topics:['AI安全','伦理标准','全球治理','AI+SDGs','国际规则'], dateObj:'2026-07-07' },
+  { id:'samsung-summer', month:'7', name:'Samsung Galaxy Unpacked（夏季）', date:'-', year:'2026', status:'unconfirmed', location:'待定', type:'厂商发布', org:'三星电子', url:'https://www.samsung.com/unpacked', desc:'三星下半年旗舰+AI硬件（传闻7月22日）', detail:'预期内容：Galaxy Z Fold/Flip新款折叠屏、可能的Galaxy智能眼镜（与Google合作）、Galaxy AI功能大版本更新。端侧AI在消费硬件落地的重要参考。注意：日期为泄露信息，三星尚未官宣。', topics:['折叠屏','Galaxy AI','智能眼镜','端侧AI','消费硬件'], dateObj:'2026-07-22' },
+  { id:'tencent-des', month:'9', name:'腾讯全球数字生态大会', date:'-', year:'2026', status:'unconfirmed', location:'中国 深圳（预计）', type:'厂商峰会', org:'腾讯', url:'https://des.cloud.tencent.com', desc:'腾讯面向产业互联网规格最高年度大会', detail:'2025年为9月16-17日深圳，2026年日期尚未官宣。关注：混元大模型进展、腾讯云AI服务、企业AI Agent、游戏/社交/内容领域AI应用。腾讯AI战略（B端+C端双线）的年度集中展示。', topics:['混元大模型','腾讯云AI','企业Agent','游戏AI','社交AI'], dateObj:'2026-09-16' },
+  { id:'yunqi', month:'9', name:'阿里云栖大会', date:'-', year:'2026', status:'unconfirmed', location:'中国 杭州云栖小镇（预计）', type:'厂商峰会', org:'阿里巴巴/阿里云', url:'https://yunqi.aliyun.com', desc:'阿里AI+云年度战略发布', detail:'2025年为9月24-26日。关注：通义大模型最新版本、百炼MaaS平台、AI Infra（PAI/灵骏）、行业智能化方案。阿里在大模型开源+商业化双轨策略的最新进展。', topics:['通义大模型','百炼平台','AI Infra','开源模型','行业智能化'], dateObj:'2026-09-24' },
+  { id:'dreamforce', month:'9', name:'Dreamforce 2026', date:'9月15-17日', year:'2026', status:'confirmed', location:'美国 旧金山', type:'厂商峰会', org:'Salesforce', url:'https://www.salesforce.com/dreamforce/', desc:'AI在企业SaaS领域落地标杆', detail:'重点：Agentforce平台（AI Agent自动完成销售/服务/营销任务）实际效果数据、Einstein AI最新能力、Data Cloud与AI的结合。观察"AI Agent如何改造企业软件"的最佳真实案例来源。', topics:['Agentforce','Einstein AI','CRM智能化','企业Agent','SaaS AI'], dateObj:'2026-09-15' },
+  { id:'meta-connect', month:'9', name:'Meta Connect 2026', date:'9月23-24日', year:'2026', status:'confirmed', location:'美国 门洛帕克', type:'厂商峰会', org:'Meta', url:'https://www.meta.com/connect/', desc:'AI+XR深度融合 · Llama开源生态', detail:'关注重点：Llama模型新版发布（开源策略是否调整）、Meta AI助手在社交产品的渗透率、Ray-Ban Meta智能眼镜AI功能迭代、Quest头显与AI交互、社交AI Agent。Meta双线并进：开源AI基座 + 消费级AI硬件。', topics:['Llama开源','AI眼镜','Quest VR','社交AI','Meta AI助手'], dateObj:'2026-09-23' },
+  { id:'openai-devday', month:'9', name:'OpenAI DevDay 2026', date:'9月29日', year:'2026', status:'confirmed', location:'美国 旧金山', type:'厂商峰会', org:'OpenAI', url:'https://openai.com/index/devday-2026/', desc:'全球AI行业风向标事件', detail:'最重要的单日AI事件之一。预期：GPT新模型（GPT-5?）能力展示、API新功能（更强Agent/工具调用/多模态）、ChatGPT产品路线图、开发者定价策略。直接影响整个AI应用层的竞争格局。', topics:['GPT新模型','API生态','AI Agent','ChatGPT','开发者工具'], dateObj:'2026-09-29' },
+  { id:'ai-everything', month:'10', name:'AI Everything Abu Dhabi', date:'10月5-7日', year:'2026', status:'confirmed', location:'阿联酋 阿布扎比', type:'行业峰会', org:'阿布扎比政府/ADNEC', url:'https://aieverythingabudhabi.com', desc:'中东规格最高AI峰会', detail:'海湾国家AI国家战略的集中展示。关注：主权AI基础设施建设（GPU集群、数据中心）、阿联酋AI投资基金动向、AI+能源（石油天然气优化）、政务AI、Falcon模型等本地大模型进展。', topics:['主权AI','AI+能源','中东AI投资','政务AI','本地模型'], dateObj:'2026-10-05' },
+  { id:'world-summit-ai', month:'10', name:'World Summit AI 2026', date:'10月7-8日', year:'2026', status:'confirmed', location:'荷兰 阿姆斯特丹', type:'行业峰会', org:'Inspired Minds 基金会', url:'https://worldsummit.ai', desc:'全球AI商业生态领袖聚会', detail:'非学术向的商业峰会，汇聚CEO/CTO/投资人。议题：AI商业战略制定、负责任AI实践、AI创业与融资趋势、跨行业AI落地案例分享。欧洲最具影响力的AI商业社区年度聚会。', topics:['AI商业战略','负责任AI','AI投资','跨行业落地','CEO社区'], dateObj:'2026-10-07' },
+  { id:'gartner', month:'10', name:'Gartner IT Symposium/Xpo', date:'10月19-22日', year:'2026', status:'confirmed', location:'美国 奥兰多', type:'行业峰会', org:'Gartner', url:'https://www.gartner.com/en/conferences/na/symposium-us', desc:'CIO决策优先级与年度技术趋势风向标', detail:'Gartner年度旗舰，发布Top Strategic Technology Trends和Hype Cycle。2026核心议题：Agentic AI企业落地路径、AI成本治理（FinOps for AI）、AI时代网络安全重构。是理解全球企业IT预算流向和CIO决策优先级的最权威信号源。', topics:['Agentic AI','Hype Cycle','AI FinOps','网络安全','CIO战略'], dateObj:'2026-10-19' },
+  { id:'global-ai-show', month:'10', name:'Global AI Show Abu Dhabi', date:'10月27-28日', year:'2026', status:'confirmed', location:'阿联酋 阿布扎比', type:'行业峰会', org:'VAP Group', url:'https://www.globalaishow.com/abu-dhabi', desc:'AI产品展示与B2B商业对接', detail:'偏商业展示和网络对接型。5000+参会者，覆盖生成式AI产品演示、计算机视觉方案、NLP应用、AI机器人。适合寻找中东AI市场合作机会，或了解区域AI产品生态。', topics:['生成式AI','计算机视觉','NLP','AI机器人','B2B对接'], dateObj:'2026-10-27' },
+  { id:'web-summit', month:'11', name:'Web Summit 2026', date:'11月9-12日', year:'2026', status:'confirmed', location:'葡萄牙 里斯本', type:'行业峰会', org:'Web Summit（Paddy Cosgrave）', url:'https://websummit.com', desc:'全球最大综合科技峰会 · AI创投晴雨表', detail:'7万+参会者，含独立AI Summit和Machine Summit两大track。关注：AI创业公司融资热度、VC对AI的投资情绪变化、AI产品化趋势、深科技方向。是感知全球科技创投周期和创业者/VC情绪的最佳场合。', topics:['AI创业','AI投资','产品化','深科技','创投情绪'], dateObj:'2026-11-09' },
+  { id:'ms-ignite', month:'11', name:'Microsoft Ignite 2026', date:'11月17-20日', year:'2026', status:'confirmed', location:'美国 旧金山', type:'厂商峰会', org:'Microsoft', url:'https://ignite.microsoft.com', desc:'微软企业AI+云年度战略（面向企业决策层）', detail:'与Build互补——Build偏开发者，Ignite偏IT决策层。关注：Copilot全家桶在企业的实际采纳数据、Azure AI新服务发布、安全AI（Security Copilot）、Microsoft 365 AI进化。', topics:['Copilot','Azure AI','安全AI','Microsoft 365','企业采纳'], dateObj:'2026-11-17' },
+  { id:'aws-reinvent', month:'12', name:'AWS re:Invent 2026', date:'11月30日-12月4日', year:'2026', status:'confirmed', location:'美国 拉斯维加斯', type:'厂商峰会', org:'Amazon / AWS', url:'https://reinvent.awsevents.com', desc:'AWS云端AI基础设施年度发布', detail:'全球最大云厂商的AI战略。关注：Bedrock模型服务扩展（支持哪些新模型）、自研Trainium芯片性价比数据、AI Agent托管服务、Amazon Q企业AI助手、Serverless AI推理。', topics:['Bedrock','Trainium','AI Agent','Amazon Q','AI Infra'], dateObj:'2026-11-30' },
+  { id:'neurips', month:'12', name:'NeurIPS 2026', date:'12月6-12日', year:'2026', status:'confirmed', location:'澳大利亚 悉尼', type:'学术顶会', org:'NeurIPS Foundation', url:'https://neurips.cc', desc:'AI/ML领域最顶级学术会议', detail:'虽然是学术会议，但对产业影响巨大。关注方向：下一代模型架构突破、Scaling Law新发现、对齐与安全新方法、多模态/世界模型、AI Agent理论框架。很多半年后落地的产品创新源头在这里。', topics:['模型架构','Scaling Law','对齐安全','世界模型','Agent理论'], dateObj:'2026-12-06' },
+  { id:'ces-2027', month:'1-2027', name:'CES 2027', date:'1月6-9日', year:'2027', status:'confirmed', location:'美国 拉斯维加斯', type:'行业展会', org:'CTA（美国消费技术协会）', url:'https://www.ces.tech', desc:'全球最大消费电子展 · AI硬件新一年风向', detail:'每年1月开年第一场科技盛会。2027看点预判：具身智能/机器人商业化进展、AI眼镜/可穿戴AI硬件爆发、自动驾驶L3+量产、AI PC第二年、端侧大模型在IoT的渗透。CES定义了全年AI硬件叙事的起点。', topics:['具身智能','AI可穿戴','自动驾驶','AI PC','端侧AI'], dateObj:'2027-01-06' },
+];
+
+// State
+let favorites = JSON.parse(localStorage.getItem('ai-radar-favs') || '[]');
+let currentFilter = 'all';
+let showFavOnly = false;
+
+function saveFavorites() {
+  localStorage.setItem('ai-radar-favs', JSON.stringify(favorites));
+  document.getElementById('fav-count').textContent = favorites.length;
+}
+
+function isFav(id) { return favorites.includes(id); }
+
+function toggleFav(id) {
+  if (isFav(id)) { favorites = favorites.filter(f => f !== id); }
+  else { favorites.push(id); }
+  saveFavorites();
+  render();
+}
+
+function getDaysUntil(dateStr) {
+  const today = new Date('2026-05-14');
+  const target = new Date(dateStr);
+  return Math.ceil((target - today) / (1000*60*60*24));
+}
+
+function getTagClass(type) {
+  const map = { '行业峰会':'tag-industry', '厂商峰会':'tag-vendor', '厂商发布':'tag-release', '行业展会':'tag-expo', '学术顶会':'tag-academic' };
+  return map[type] || 'tag-industry';
+}
+
+function showDetail(id) {
+  const c = conferences.find(x => x.id === id);
+  if (!c) return;
+  const days = getDaysUntil(c.dateObj);
+  document.getElementById('detail-content').innerHTML = `
+    <h2>${c.name}</h2>
+    <div class="detail-section"><h3>基本信息</h3>
+      <p><strong>日期：</strong>${c.date === '-' ? '未官宣' : c.date + '，' + c.year} &nbsp; ${c.status==='confirmed'?'<span class="status-ok">✓ 官方确认</span>':'<span class="status-warn">⚠ 未官宣</span>'}</p>
+      <p><strong>地点：</strong>${c.location}</p>
+      <p><strong>主办方：</strong>${c.org}</p>
+      <p><strong>官网：</strong><a href="${c.url}" target="_blank">${c.url}</a></p>
+      ${days > 0 ? '<p><strong>倒计时：</strong><span style="color:#6366f1;font-weight:600;">'+days+' 天后</span></p>' : ''}
+    </div>
+    <div class="detail-section"><h3>战略分析师关注要点</h3><p>${c.detail}</p></div>
+    <div class="detail-section"><h3>核心议题标签</h3>
+      <div class="detail-tags">${c.topics.map(t=>'<span>'+t+'</span>').join('')}</div>
+    </div>
+  `;
+  document.getElementById('detail-overlay').classList.add('show');
+}
+
+function closeDetail() { document.getElementById('detail-overlay').classList.remove('show'); }
+
+function render() {
+  const container = document.getElementById('card-container');
+  // Group by month
+  const months = [...new Set(conferences.map(c => c.month))];
+  const monthNames = {'5':'五月 May','6':'六月 June','7':'七月 July','9':'九月 September','10':'十月 October','11':'十一月 November','12':'十二月 December','1-2027':'2027 · 一月 January'};
+
+  let html = '';
+  months.forEach(m => {
+    let cards = conferences.filter(c => c.month === m);
+    // Apply filters
+    let visibleCards = cards.filter(c => {
+      if (showFavOnly && !isFav(c.id)) return false;
+      if (currentFilter !== 'all' && c.type !== currentFilter) return false;
+      return true;
+    });
+    if (visibleCards.length === 0) return;
+
+    html += `<section class="month-section" id="month-${m}">`;
+    html += `<div class="month-header"><span class="month-num">${m.replace('-2027','')}</span><div><div class="month-name">${monthNames[m]||m}</div><span class="month-count">${visibleCards.length}场</span></div></div>`;
+
+    visibleCards.forEach(c => {
+      const days = getDaysUntil(c.dateObj);
+      const favClass = isFav(c.id) ? 'favorited' : '';
+      const favIcon = isFav(c.id) ? '★' : '☆';
+      const countdown = days > 0 ? `<span class="countdown-inline">${days}天后</span>` : '';
+
+      html += `<div class="card" data-type="${c.type}" data-id="${c.id}">
+        <div class="card-row1">
+          <span class="card-title">${c.name}</span>
+          <span class="tag ${getTagClass(c.type)}">${c.type}</span>
+          ${countdown}
+        </div>
+        <div class="card-meta">
+          <span>${c.date === '-' ? '📅 未官宣' : '📅 '+c.date}</span>
+          <span>📍 ${c.location}</span>
+          <span class="${c.status==='confirmed'?'status-ok':'status-warn'}">${c.status==='confirmed'?'✓ 确认':'⚠ 未确认'}</span>
+        </div>
+        <div class="card-desc">${c.desc}</div>
+        <div class="card-footer">
+          <span class="card-org">${c.org}</span>
+          <div class="card-actions">
+            <a class="btn-detail" onclick="showDetail('${c.id}')">查看详情 →</a>
+            <a href="${c.url}" target="_blank" class="btn-detail" style="margin-left:4px;">官网 ↗</a>
+            <button class="btn-fav ${favClass}" onclick="event.stopPropagation();toggleFav('${c.id}')" title="${isFav(c.id)?'取消关注':'加入关注'}">${favIcon}</button>
+          </div>
+        </div>
+      </div>`;
+    });
+    html += '</section>';
+  });
+
+  if (!html) html = '<div style="text-align:center;padding:60px;color:#64748b;">没有符合筛选条件的大会</div>';
+  container.innerHTML = html;
+}
+
+// Events
+document.getElementById('detail-close').onclick = closeDetail;
+document.getElementById('detail-overlay').onclick = function(e) { if(e.target===this) closeDetail(); };
+document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeDetail(); });
+
+document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    currentFilter = this.dataset.filter;
+    showFavOnly = false;
+    document.getElementById('fav-filter').classList.remove('fav-active');
+    render();
+  });
+});
+
+document.getElementById('fav-filter').addEventListener('click', function() {
+  showFavOnly = !showFavOnly;
+  this.classList.toggle('fav-active', showFavOnly);
+  if (showFavOnly) {
+    document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+    document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+    currentFilter = 'all';
+  }
+  render();
+});
+
+// Nav scroll highlight
+window.addEventListener('scroll', () => {
+  const sections = document.querySelectorAll('.month-section');
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
+  document.querySelectorAll('.nav-bar a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+
+// Init
+saveFavorites();
+render();
+</script>
+</body>
+</html>
