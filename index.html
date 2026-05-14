@@ -17,6 +17,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
 .hero .subtitle { color: #94a3b8; font-size: 0.95rem; position: relative; }
 .hero .date-badge { display: inline-block; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); border-radius: 20px; padding: 4px 16px; margin-top: 10px; font-size: 0.82rem; color: #a5b4fc; position: relative; }
 
+/* Auth bar */
+.auth-bar { background: rgba(15,15,26,0.95); border-bottom: 1px solid rgba(99,102,241,0.15); padding: 10px 20px; display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 0.85rem; }
+.auth-bar .auth-info { color: #94a3b8; display: flex; align-items: center; gap: 8px; }
+.auth-bar .auth-info img { width: 24px; height: 24px; border-radius: 50%; }
+.auth-bar .btn-google { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); color: #93c5fd; padding: 5px 14px; border-radius: 14px; cursor: pointer; font-size: 0.82rem; transition: all 0.2s; }
+.auth-bar .btn-google:hover { background: rgba(59,130,246,0.25); }
+.auth-bar .btn-logout { background: rgba(100,116,139,0.15); border: 1px solid rgba(100,116,139,0.3); color: #94a3b8; padding: 5px 12px; border-radius: 14px; cursor: pointer; font-size: 0.78rem; transition: all 0.2s; }
+.auth-bar .btn-logout:hover { background: rgba(100,116,139,0.25); }
+.auth-bar .sync-status { font-size: 0.75rem; color: #64748b; }
+
 .nav-bar { position: sticky; top: 0; z-index: 100; background: rgba(15,15,26,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(99,102,241,0.2); padding: 10px 20px; display: flex; gap: 6px; overflow-x: auto; justify-content: center; flex-wrap: wrap; }
 .nav-bar a { text-decoration: none; color: #94a3b8; font-size: 0.82rem; padding: 5px 12px; border-radius: 14px; border: 1px solid rgba(148,163,184,0.2); transition: all 0.2s; white-space: nowrap; }
 .nav-bar a:hover, .nav-bar a.active { background: rgba(99,102,241,0.15); color: #a5b4fc; border-color: rgba(99,102,241,0.4); }
@@ -36,7 +46,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
 .month-name { font-size: 1rem; color: #cbd5e1; }
 .month-count { font-size: 0.72rem; color: #64748b; background: rgba(100,116,139,0.15); padding: 2px 8px; border-radius: 10px; }
 
-.card { background: rgba(30,30,50,0.6); border: 1px solid rgba(99,102,241,0.12); border-radius: 14px; padding: 20px 22px; margin-bottom: 14px; transition: all 0.3s; position: relative; cursor: default; }
+.card { background: rgba(30,30,50,0.6); border: 1px solid rgba(99,102,241,0.12); border-radius: 14px; padding: 20px 22px; margin-bottom: 14px; transition: all 0.3s; position: relative; }
 .card:hover { border-color: rgba(99,102,241,0.35); box-shadow: 0 6px 24px rgba(99,102,241,0.08); }
 .card.hidden { display: none; }
 .card-row1 { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; flex-wrap: wrap; gap: 6px; }
@@ -62,10 +72,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
 
 .status-ok { color: #4ade80; }
 .status-warn { color: #fbbf24; }
-
 .countdown-inline { font-size: 0.78rem; color: #6366f1; font-weight: 600; margin-left: auto; white-space: nowrap; }
 
-/* Detail overlay */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(30,30,50,0.95); border: 1px solid rgba(99,102,241,0.3); color: #e0e0e0; padding: 10px 20px; border-radius: 10px; font-size: 0.85rem; z-index: 300; opacity: 0; transition: all 0.3s; pointer-events: none; }
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
 .detail-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); justify-content: center; align-items: center; padding: 20px; }
 .detail-overlay.show { display: flex; }
 .detail-panel { background: #1e1e32; border: 1px solid rgba(99,102,241,0.3); border-radius: 16px; max-width: 700px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 32px; position: relative; }
@@ -86,6 +97,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
   .hero h1 { font-size: 1.5rem; }
   .card { padding: 16px; }
   .detail-panel { padding: 20px; margin: 10px; }
+  .auth-bar { font-size: 0.78rem; }
 }
 </style>
 </head>
@@ -95,6 +107,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
   <h1>AI 行业峰会雷达</h1>
   <p class="subtitle">2026下半年 ~ 2027初 · 值得关注的AI行业大会</p>
   <span class="date-badge">立足 2026.05.14 · 展望未来</span>
+</div>
+
+<div class="auth-bar" id="auth-bar">
+  <button class="btn-google" id="btn-google" onclick="window._app.signIn()">用 Google 登录</button>
+  <span style="color:#475569;">登录后可跨设备同步关注列表</span>
 </div>
 
 <nav class="nav-bar" id="nav">
@@ -129,12 +146,32 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <div class="footer">
   <p>AI行业峰会雷达 · 数据截至2026年5月14日 · 日期均经官方来源验证 · 标注"-"为未官宣</p>
-  <p style="margin-top:4px;">关注列表自动保存在本地浏览器中，刷新不丢失</p>
+  <p style="margin-top:4px;">关注列表已接入云端，登录Google账号后可跨设备同步</p>
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDIzOmi4es2830F-1BaQklQxHn2K3yw1QI",
+  authDomain: "ai-event-radar.firebaseapp.com",
+  projectId: "ai-event-radar",
+  storageBucket: "ai-event-radar.firebasestorage.app",
+  messagingSenderId: "566178689498",
+  appId: "1:566178689498:web:dce04198322349c2c0d0e3"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// === Data ===
 const conferences = [
   { id:'google-io', month:'5', name:'Google I/O 2026', date:'5月19-20日', year:'2026', status:'confirmed', location:'美国 山景城', type:'厂商峰会', org:'Google', url:'https://io.google', desc:'Google AI全线产品年度发布', detail:'观看重点：Gemini模型新版本能力演示、Android AI功能更新、AI Agent（Project Astra等）进展、AI搜索体验升级、Gemma开源模型。这是观察Google如何在C端AI产品对抗ChatGPT的最核心窗口。', topics:['Gemini','Android AI','AI Agent','AI搜索','开发者工具'], dateObj:'2026-05-19' },
   { id:'computex', month:'6', name:'COMPUTEX 台北国际电脑展', date:'6月2-5日', year:'2026', status:'confirmed', location:'中国台湾 台北', type:'行业展会', org:'TAITRA（台湾外贸协会）', url:'https://www.computextaipei.com.tw', desc:'全球AI算力与芯片供应链核心展台', detail:'Jensen Huang将再次Keynote。重点关注：NVIDIA下一代GPU路线图、AMD MI系列进展、Intel加速器、AI服务器架构演进、液冷散热方案、AI PC芯片竞争格局。对AI Infra产业链投资分析必看。', topics:['AI芯片','AI服务器','液冷散热','AI PC','算力基础设施'], dateObj:'2026-06-02' },
@@ -163,29 +200,119 @@ const conferences = [
   { id:'ces-2027', month:'1-2027', name:'CES 2027', date:'1月6-9日', year:'2027', status:'confirmed', location:'美国 拉斯维加斯', type:'行业展会', org:'CTA（美国消费技术协会）', url:'https://www.ces.tech', desc:'全球最大消费电子展 · AI硬件新一年风向', detail:'每年1月开年第一场科技盛会。2027看点预判：具身智能/机器人商业化进展、AI眼镜/可穿戴AI硬件爆发、自动驾驶L3+量产、AI PC第二年、端侧大模型在IoT的渗透。CES定义了全年AI硬件叙事的起点。', topics:['具身智能','AI可穿戴','自动驾驶','AI PC','端侧AI'], dateObj:'2027-01-06' },
 ];
 
-// State
-let favorites = JSON.parse(localStorage.getItem('ai-radar-favs') || '[]');
+// === State ===
+let favorites = [];
 let currentFilter = 'all';
 let showFavOnly = false;
+let currentUser = null;
+let isSyncing = false;
 
-function saveFavorites() {
-  localStorage.setItem('ai-radar-favs', JSON.stringify(favorites));
-  document.getElementById('fav-count').textContent = favorites.length;
+function loadLocal() {
+  try { favorites = JSON.parse(localStorage.getItem('ai-radar-favs') || '[]'); } catch(e) { favorites = []; }
+}
+function saveLocal() { localStorage.setItem('ai-radar-favs', JSON.stringify(favorites)); }
+
+async function loadCloud() {
+  if (!currentUser) return;
+  isSyncing = true; updateAuthBar();
+  try {
+    const snap = await getDoc(doc(db, 'users', currentUser.uid));
+    if (snap.exists()) {
+      const cloud = snap.data().favorites || [];
+      // Merge: union of local + cloud
+      const merged = [...new Set([...favorites, ...cloud])];
+      if (JSON.stringify(merged) !== JSON.stringify(favorites)) {
+        favorites = merged;
+        saveLocal();
+        render();
+        showToast('关注列表已从云端同步');
+      }
+    }
+  } catch(e) { console.error('loadCloud', e); showToast('同步失败: ' + e.message); }
+  finally { isSyncing = false; updateAuthBar(); }
 }
 
+async function saveCloud() {
+  if (!currentUser) { saveLocal(); return; }
+  isSyncing = true; updateAuthBar();
+  try {
+    await setDoc(doc(db, 'users', currentUser.uid), { favorites, updatedAt: new Date().toISOString() }, { merge: true });
+  } catch(e) { console.error('saveCloud', e); showToast('保存失败: ' + e.message); }
+  finally { isSyncing = false; updateAuthBar(); }
+}
+
+// === Auth ===
+const provider = new GoogleAuthProvider();
+
+async function signIn() {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch(e) { showToast('登录失败: ' + e.message); }
+}
+
+async function signOutUser() {
+  try {
+    await signOut(auth);
+    favorites = [];
+    loadLocal();
+    render();
+    showToast('已退出登录');
+  } catch(e) { showToast('退出失败: ' + e.message); }
+}
+
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+  updateAuthBar();
+  if (user) {
+    await loadCloud();
+  }
+});
+
+function updateAuthBar() {
+  const bar = document.getElementById('auth-bar');
+  if (!bar) return;
+  if (currentUser) {
+    const syncLabel = isSyncing ? '同步中...' : '已同步到云端';
+    bar.innerHTML = `
+      <img src="${currentUser.photoURL || ''}" alt="" style="width:24px;height:24px;border-radius:50%;">
+      <span style="color:#cbd5e1;">${currentUser.displayName || currentUser.email}</span>
+      <span class="sync-status">${syncLabel}</span>
+      <button class="btn-logout" onclick="window._app.signOut()">退出</button>
+    `;
+  } else {
+    bar.innerHTML = `
+      <button class="btn-google" onclick="window._app.signIn()">用 Google 登录</button>
+      <span style="color:#475569;">登录后可跨设备同步关注列表</span>
+    `;
+  }
+}
+
+// === UI ===
 function isFav(id) { return favorites.includes(id); }
 
-function toggleFav(id) {
+async function toggleFav(id) {
+  if (!currentUser) {
+    showToast('请先登录以同步关注列表');
+    // Still allow local toggle for preview
+  }
   if (isFav(id)) { favorites = favorites.filter(f => f !== id); }
   else { favorites.push(id); }
-  saveFavorites();
+  saveLocal();
+  await saveCloud();
   render();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
 }
 
 function getDaysUntil(dateStr) {
   const today = new Date('2026-05-14');
   const target = new Date(dateStr);
-  return Math.ceil((target - today) / (1000*60*60*24));
+  return Math.ceil((target - today) / (1000 * 60 * 60 * 24));
 }
 
 function getTagClass(type) {
@@ -218,25 +345,23 @@ function closeDetail() { document.getElementById('detail-overlay').classList.rem
 
 function render() {
   const container = document.getElementById('card-container');
-  // Group by month
   const months = [...new Set(conferences.map(c => c.month))];
   const monthNames = {'5':'五月 May','6':'六月 June','7':'七月 July','9':'九月 September','10':'十月 October','11':'十一月 November','12':'十二月 December','1-2027':'2027 · 一月 January'};
 
   let html = '';
   months.forEach(m => {
     let cards = conferences.filter(c => c.month === m);
-    // Apply filters
-    let visibleCards = cards.filter(c => {
+    let visible = cards.filter(c => {
       if (showFavOnly && !isFav(c.id)) return false;
       if (currentFilter !== 'all' && c.type !== currentFilter) return false;
       return true;
     });
-    if (visibleCards.length === 0) return;
+    if (visible.length === 0) return;
 
     html += `<section class="month-section" id="month-${m}">`;
-    html += `<div class="month-header"><span class="month-num">${m.replace('-2027','')}</span><div><div class="month-name">${monthNames[m]||m}</div><span class="month-count">${visibleCards.length}场</span></div></div>`;
+    html += `<div class="month-header"><span class="month-num">${m.replace('-2027','')}</span><div><div class="month-name">${monthNames[m]||m}</div><span class="month-count">${visible.length}场</span></div></div>`;
 
-    visibleCards.forEach(c => {
+    visible.forEach(c => {
       const days = getDaysUntil(c.dateObj);
       const favClass = isFav(c.id) ? 'favorited' : '';
       const favIcon = isFav(c.id) ? '★' : '☆';
@@ -257,9 +382,9 @@ function render() {
         <div class="card-footer">
           <span class="card-org">${c.org}</span>
           <div class="card-actions">
-            <a class="btn-detail" onclick="showDetail('${c.id}')">查看详情 →</a>
+            <a class="btn-detail" onclick="window._app.showDetail('${c.id}')">查看详情 →</a>
             <a href="${c.url}" target="_blank" class="btn-detail" style="margin-left:4px;">官网 ↗</a>
-            <button class="btn-fav ${favClass}" onclick="event.stopPropagation();toggleFav('${c.id}')" title="${isFav(c.id)?'取消关注':'加入关注'}">${favIcon}</button>
+            <button class="btn-fav ${favClass}" onclick="event.stopPropagation();window._app.toggleFav('${c.id}')" title="${isFav(c.id)?'取消关注':'加入关注'}">${favIcon}</button>
           </div>
         </div>
       </div>`;
@@ -269,9 +394,10 @@ function render() {
 
   if (!html) html = '<div style="text-align:center;padding:60px;color:#64748b;">没有符合筛选条件的大会</div>';
   container.innerHTML = html;
+  document.getElementById('fav-count').textContent = favorites.length;
 }
 
-// Events
+// === Event wiring ===
 document.getElementById('detail-close').onclick = closeDetail;
 document.getElementById('detail-overlay').onclick = function(e) { if(e.target===this) closeDetail(); };
 document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeDetail(); });
@@ -298,18 +424,23 @@ document.getElementById('fav-filter').addEventListener('click', function() {
   render();
 });
 
-// Nav scroll highlight
 window.addEventListener('scroll', () => {
   const sections = document.querySelectorAll('.month-section');
   let current = '';
-  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
   document.querySelectorAll('.nav-bar a').forEach(a => {
-    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
   });
 });
 
+// Expose to window for onclick handlers
+window._app = {
+  signIn, signOut: signOutUser, toggleFav, showDetail
+};
+
 // Init
-saveFavorites();
+loadLocal();
 render();
 </script>
 </body>
