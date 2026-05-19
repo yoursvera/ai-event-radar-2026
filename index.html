@@ -123,8 +123,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
 </div>
 
 <div class="auth-bar" id="auth-bar">
-  <button class="btn-google" id="btn-google" onclick="window._app.signIn()">用 Google 登录</button>
-  <span style="color:#475569;">登录后可跨设备同步关注列表</span>
+  <span style="color:#94a3b8;">💾 关注列表已自动保存在本地浏览器</span>
 </div>
 
 <nav class="nav-bar" id="nav">
@@ -170,26 +169,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
 
 <div class="footer">
   <p>AI行业峰会雷达 · 数据截至2026年5月19日 · 日期均经官方来源验证 · 标注"-"为未官宣</p>
-  <p style="margin-top:4px;">关注列表已接入云端，登录Google账号后可跨设备同步 · 浏览器提醒已开启</p>
+  <p style="margin-top:4px;">关注列表保存在本地浏览器 · 浏览器提醒已开启</p>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDIzOmi4es2830F-1BaQklQxHn2K3yw1QI",
-  authDomain: "ai-event-radar.firebaseapp.com",
-  projectId: "ai-event-radar",
-  storageBucket: "ai-event-radar.firebasestorage.app",
-  messagingSenderId: "566178689498",
-  appId: "1:566178689498:web:dce04198322349c2c0d0e3"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+<script>
 
 // === Data ===
 const conferences = [
@@ -239,8 +222,6 @@ let reminders = [];
 let currentFilter = 'all';
 let currentRegion = 'all';
 let showFavOnly = false;
-let currentUser = null;
-let isSyncing = false;
 
 function loadLocal() {
   try {
@@ -251,72 +232,6 @@ function loadLocal() {
 function saveLocal() {
   localStorage.setItem('ai-radar-favs', JSON.stringify(favorites));
   localStorage.setItem('ai-radar-reminders', JSON.stringify(reminders));
-}
-
-async function loadCloud() {
-  if (!currentUser) return;
-  isSyncing = true; updateAuthBar();
-  try {
-    const snap = await getDoc(doc(db, 'users', currentUser.uid));
-    if (snap.exists()) {
-      const data = snap.data();
-      const cloudFavs = data.favorites || [];
-      const cloudReminders = data.reminders || [];
-      const mergedFavs = [...new Set([...favorites, ...cloudFavs])];
-      const mergedReminders = [...new Set([...reminders, ...cloudReminders])];
-      if (JSON.stringify(mergedFavs) !== JSON.stringify(favorites) || JSON.stringify(mergedReminders) !== JSON.stringify(reminders)) {
-        favorites = mergedFavs;
-        reminders = mergedReminders;
-        saveLocal();
-        render();
-        showToast('关注列表已从云端同步');
-      }
-    }
-  } catch(e) { console.error('loadCloud', e); showToast('同步失败: ' + e.message); }
-  finally { isSyncing = false; updateAuthBar(); }
-}
-
-async function saveCloud() {
-  if (!currentUser) { saveLocal(); return; }
-  isSyncing = true; updateAuthBar();
-  try {
-    await setDoc(doc(db, 'users', currentUser.uid), {
-      favorites,
-      reminders,
-      updatedAt: new Date().toISOString()
-    }, { merge: true });
-  } catch(e) { console.error('saveCloud', e); showToast('保存失败: ' + e.message); }
-  finally { isSyncing = false; updateAuthBar(); }
-}
-
-// === Auth ===
-const provider = new GoogleAuthProvider();
-async function signIn() {
-  try { await signInWithPopup(auth, provider); } catch(e) { showToast('登录失败: ' + e.message); }
-}
-async function signOutUser() {
-  try {
-    await signOut(auth);
-    favorites = []; reminders = [];
-    loadLocal(); render();
-    showToast('已退出登录');
-  } catch(e) { showToast('退出失败: ' + e.message); }
-}
-onAuthStateChanged(auth, async (user) => {
-  currentUser = user;
-  updateAuthBar();
-  if (user) await loadCloud();
-});
-
-function updateAuthBar() {
-  const bar = document.getElementById('auth-bar');
-  if (!bar) return;
-  if (currentUser) {
-    const syncLabel = isSyncing ? '同步中...' : '已同步到云端';
-    bar.innerHTML = `<img src="${currentUser.photoURL || ''}" alt="" style="width:24px;height:24px;border-radius:50%;"><span style="color:#cbd5e1;">${currentUser.displayName || currentUser.email}</span><span class="sync-status">${syncLabel}</span><button class="btn-logout" onclick="window._app.signOut()">退出</button>`;
-  } else {
-    bar.innerHTML = `<button class="btn-google" onclick="window._app.signIn()">用 Google 登录</button><span style="color:#475569;">登录后可跨设备同步关注列表</span>`;
-  }
 }
 
 // === Notifications ===
@@ -369,11 +284,10 @@ function fireReminders(toFire, triggered) {
 function isFav(id) { return favorites.includes(id); }
 function hasReminder(id) { return reminders.some(r => r.id === id); }
 
-async function toggleFav(id) {
-  if (!currentUser) showToast('请先登录以同步关注列表');
-  if (isFav(id)) { favorites = favorites.filter(f => f !== id); }
-  else { favorites.push(id); }
-  saveLocal(); await saveCloud(); render();
+function toggleFav(id) {
+  if (isFav(id)) { favorites = favorites.filter(f => f !== id); showToast('已取消关注'); }
+  else { favorites.push(id); showToast('已加入关注'); }
+  saveLocal(); render();
 }
 
 function toggleReminder(id) {
@@ -391,7 +305,7 @@ function toggleReminder(id) {
     requestNotif();
     showToast(`已设置提醒：${conf.name} 前30天`);
   }
-  saveLocal(); saveCloud(); render();
+  saveLocal(); render();
 }
 
 function showToast(msg) {
@@ -547,7 +461,7 @@ window.addEventListener('scroll', () => {
 
 // Expose to window for onclick handlers
 window._app = {
-  signIn, signOut: signOutUser, toggleFav, toggleReminder, showDetail
+  toggleFav, toggleReminder, showDetail
 };
 
 // Init
